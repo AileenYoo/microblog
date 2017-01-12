@@ -6,9 +6,16 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var paritals = require('express-partials');
 
+var settings = require("./settings");
+var session = require("express-session");
+// var mongoStore = require("connect-mongo")(session);
+
+
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 var list = require('./routes/list');
+
 
 var app = express();
 
@@ -24,10 +31,42 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(paritals());
+// app.use(session({
+// 	resave: false,  
+//     saveUninitialized: true,  
+//     cookie: {maxAge:3600000},  
+// 	secret:settings.cookieSecret,
+// 	store:new mongoStore({
+// 		db:settings.db,
+// 		url: 'mongodb://localhost/microblog'
+// 	})
+// }));
 
 app.use('/', index);
 app.use('/users', users);
 app.use('/list', list);
+
+
+
+var util = require('util');
+
+// app.helpers({
+// 	inspect:function(obj){
+// 		return util.inspect(obj,true);
+// 	}
+// });
+
+// app.dynamicHelpers({
+// 	headers:function(req,res){
+
+// 		return req.headers;
+// 	}
+// });
+
+
+app.get('/helper',function(req,res){
+	res.render("helper",{title:"Helpers"});
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -35,6 +74,7 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -46,6 +86,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
 
 module.exports = app;

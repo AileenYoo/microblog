@@ -14,8 +14,7 @@
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.0",
     "express-partials":"*",
-    "connect-mongo":">=0.1.7",
-    "mongodb":">=0.9.9",
-    "express-session":"*"
+    "mongoose":"",
+    "express-session":""
   }
 }
